@@ -14,7 +14,7 @@ version: '3.1'
 services:
 
   mariadb:
-    image: samirkherraz/mariadb
+    image: dotriver/mariadb
     environment:
       - ROOT_PASSWORD=password
     ports:
