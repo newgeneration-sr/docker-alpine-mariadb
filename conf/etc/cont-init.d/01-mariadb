@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv sh
+
 do_query() {
     echo "$1" >> /tmp/cmd
   
@@ -8,7 +9,6 @@ do_exec_query(){
         /usr/bin/mysql </tmp/cmd
         return $?
 }
-
 
 is_db_enabled(){
     NAME="DB_"$COUNTER"_NAME"
@@ -31,6 +31,11 @@ is_db_enabled(){
 next(){
     echo "> Get Next Site"
     COUNTER=$(($COUNTER + 1))
+}
+
+mysqld_listen(){
+    sed -Ei "s/(bind-address[^0-9.]*).*$/\1$1/g" /etc/my.cnf.d/mariadb-server.cnf
+    killall mysqld
 }
 
 chown mysql:mysql /var/lib/mysql -R
@@ -74,8 +79,9 @@ then
 
         do_exec_query 
         mysqladmin -u root password $ROOT_PASSWORD
-        echo "0" > /tmp/phpmyadmin
+        mysqld_listen 0.0.0.0
 
+        echo "0" > /tmp/phpmyadmin
 else
         echo "0" > /tmp/mariadb
         echo "0" > /tmp/phpmyadmin
