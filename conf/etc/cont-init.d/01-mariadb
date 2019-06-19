@@ -49,6 +49,8 @@ COUNTER=0
 if [ -z "$(ls -A "/var/lib/mysql")" ];
 then
         su - mysql -s /bin/sh -c "mysql_install_db" 
+        chown mysql:mysql /var/lib/mysql/ -R
+        rm -R /tmp/mysql
         echo "0" > /tmp/mariadb
         rm /tmp/cmd
         do_query "DELETE FROM mysql.user WHERE User='';"
@@ -80,9 +82,9 @@ then
         do_exec_query 
         mysqladmin -u root password $ROOT_PASSWORD
         mysqld_listen 0.0.0.0
-
         echo "0" > /tmp/phpmyadmin
 else
+        mysqld_listen 0.0.0.0
         echo "0" > /tmp/mariadb
         echo "0" > /tmp/phpmyadmin
 fi
