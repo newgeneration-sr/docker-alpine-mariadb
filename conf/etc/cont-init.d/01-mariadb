@@ -49,10 +49,7 @@ COUNTER=0
 if [ -z "$(ls -A "/var/lib/mysql")" ];
 then
         su - mysql -s /bin/sh -c "mysql_install_db" 
-        chown mysql:mysql /var/lib/mysql/ -R
-        rm -R /tmp/mysql
         echo "0" > /tmp/mariadb
-        rm /tmp/cmd
         do_query "DELETE FROM mysql.user WHERE User='';"
         do_query "DELETE FROM mysql.user WHERE User <> 'root';"
         do_query "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1');"
