@@ -1,0 +1,49 @@
+#!/usr/bin/with-contenv sh
+
+backup(){
+	echo "> "$1
+	mv /var/lib/mysql-backup/$1.sql.6 /var/lib/mysql-backup/$1.sql.7 
+    mv /var/lib/mysql-backup/$1.sql.5 /var/lib/mysql-backup/$1.sql.6 
+    mv /var/lib/mysql-backup/$1.sql.4 /var/lib/mysql-backup/$1.sql.5 
+	mv /var/lib/mysql-backup/$1.sql.3 /var/lib/mysql-backup/$1.sql.4
+	mv /var/lib/mysql-backup/$1.sql.2 /var/lib/mysql-backup/$1.sql.3
+	mv /var/lib/mysql-backup/$1.sql.1 /var/lib/mysql-backup/$1.sql.2
+	mv /var/lib/mysql-backup/$1.sql /var/lib/mysql-backup/$1.sql.1
+	mysqldump -u root -p"${ROOT_PASSWORD}" $1 > /var/lib/mysql-backup/$1.sql
+}
+
+
+next(){
+    echo "> Get Next Site"
+    COUNTER=$(($COUNTER + 1))
+}
+
+is_db_enabled(){
+    NAME="DB_"$COUNTER"_NAME"
+    DB_NAME=$(eval 'echo $'$NAME)
+    if [ -z "$DB_NAME" ];
+    then 
+        return 1
+    fi
+
+    NAME="DB_"$COUNTER"_PASS"
+    DB_PASS=$(eval 'echo $'$NAME)
+    if [ -z "$DB_PASS" ];
+    then 
+        DB_PASS=$ROOT_PASSWORD
+    fi
+    
+    return 0
+}
+
+
+COUNTER=0
+while [ 1 -eq 1 ];
+do    
+    if ! is_db_enabled;
+    then
+        break
+    fi
+    backup $NAME
+    next
+done
