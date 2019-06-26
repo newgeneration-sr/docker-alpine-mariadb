@@ -14,5 +14,6 @@ ADD conf/ /
 
 RUN set -x \
     && chown -R nginx:nginx /etc/phpmyadmin \
-    && chmod +x /etc/cont-init.d/* \
-    && chmod +x /etc/s6/services/*/*
+    && chmod +x /etc/cont-init.d/ -R \
+    && chmod +x /etc/periodic/ -R  \
+    && chmod +x /etc/s6/services/ -R 
