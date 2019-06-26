@@ -9,7 +9,7 @@ backup(){
 	mv /var/lib/mysql-backup/$1.sql.2 /var/lib/mysql-backup/$1.sql.3
 	mv /var/lib/mysql-backup/$1.sql.1 /var/lib/mysql-backup/$1.sql.2
 	mv /var/lib/mysql-backup/$1.sql /var/lib/mysql-backup/$1.sql.1
-	mysqldump -u root -p"${ROOT_PASSWORD}" $1 > /var/lib/mysql-backup/$1.sql
+	mysqldump -u root -p$ROOT_PASSWORD $1 > /var/lib/mysql-backup/$1.sql
 }
 
 
@@ -26,13 +26,6 @@ is_db_enabled(){
         return 1
     fi
 
-    NAME="DB_"$COUNTER"_PASS"
-    DB_PASS=$(eval 'echo $'$NAME)
-    if [ -z "$DB_PASS" ];
-    then 
-        DB_PASS=$ROOT_PASSWORD
-    fi
-    
     return 0
 }
 
@@ -44,6 +37,6 @@ do
     then
         break
     fi
-    backup $NAME
+    backup $DB_NAME
     next
 done
