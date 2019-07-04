@@ -6,46 +6,11 @@ socket                          = /run/mysqld/mysqld.sock
 port                            = 3306
 socket                          = /run/mysqld/mysqld.sock
 bind-address                    = 127.0.0.1
-max_allowed_packet              = 16M
-thread_stack                    = 192K
-thread_cache_size               = 8
-open_files_limit                = 30000
 server-id                       = 1
 datadir                         = /var/lib/mysql/
 tmpdir                          = /tmp
-query_cache_size                = 64M
-log_error                       = /var/log/mysql/error.log
-expire_logs_days                = 10
-max_binlog_size                 = 100M
-slow_query_log_file             = /var/log/mysql/mysql-slow.log
-slow_query_log                  = 1
-long_query_time                 = 2
-key_buffer_size                 = 32M
-
-max_connections                 = 100
-max_user_connections            = 50
-query_cache_type                = 1
-query_cache_limit               = 4M
-
-innodb_buffer_pool_instances    = 1
-innodb_file_per_table           = 1
-innodb_buffer_pool_size         = 2G
-innodb_log_file_size            = 512M
-innodb_log_buffer_size          = 1M
-join_buffer_size                = 128M
-read_rnd_buffer_size            = 8M
-max_allowed_packet              = 20M
-tmp_table_size                  = 256M
-max_heap_table_size             = 256M
-table_open_cache                = 7500
-thread_cache_size               = 25
-innodb_io_capacity		        = 100
 skip-external-locking 
-log_queries_not_using_indexes
-
 sql_mode                        = ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
-
-
 [mysqldump]
 quick
 max_allowed_packet = 64M
