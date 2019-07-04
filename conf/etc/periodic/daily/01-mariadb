@@ -1,15 +1,27 @@
 #!/usr/bin/with-contenv sh
 
 backup(){
-	echo "> "$1
-	mv /var/lib/mysql-backup/$1.sql.6 /var/lib/mysql-backup/$1.sql.7 
-    mv /var/lib/mysql-backup/$1.sql.5 /var/lib/mysql-backup/$1.sql.6 
-    mv /var/lib/mysql-backup/$1.sql.4 /var/lib/mysql-backup/$1.sql.5 
-	mv /var/lib/mysql-backup/$1.sql.3 /var/lib/mysql-backup/$1.sql.4
-	mv /var/lib/mysql-backup/$1.sql.2 /var/lib/mysql-backup/$1.sql.3
-	mv /var/lib/mysql-backup/$1.sql.1 /var/lib/mysql-backup/$1.sql.2
-	mv /var/lib/mysql-backup/$1.sql /var/lib/mysql-backup/$1.sql.1
-	mysqldump -u root -p$ROOT_PASSWORD $1 > /var/lib/mysql-backup/$1.sql
+    echo "> "$1
+    mv /var/lib/mysql-backup/$1.6 /var/lib/mysql-backup/$1.7 > /dev/null 2>&1
+    mv /var/lib/mysql-backup/$1.5 /var/lib/mysql-backup/$1.6 > /dev/null 2>&1
+    mv /var/lib/mysql-backup/$1.4 /var/lib/mysql-backup/$1.5 > /dev/null 2>&1
+    mv /var/lib/mysql-backup/$1.3 /var/lib/mysql-backup/$1.4 > /dev/null 2>&1
+    mv /var/lib/mysql-backup/$1.2 /var/lib/mysql-backup/$1.3 > /dev/null 2>&1
+    mv /var/lib/mysql-backup/$1.1 /var/lib/mysql-backup/$1.2 > /dev/null 2>&1
+    mv /var/lib/mysql-backup/$1 /var/lib/mysql-backup/$1.1 > /dev/null 2>&1
+}
+
+dump(){
+    
+    mkdir -p /var/lib/mysql-backup/$1/
+    tables=$(mysql -NBA -u root -p$ROOT_PASSWORD -D $1 -e 'show tables')
+    for tab in $tables;
+    do
+        echo "> $tab"
+        mysqldump -uroot -p$ROOT_PASSWORD $1 $tab > /var/lib/mysql-backup/$1/$tab.sql
+    done
+    
+    
 }
 
 
@@ -22,21 +34,22 @@ is_db_enabled(){
     NAME="DB_"$COUNTER"_NAME"
     DB_NAME=$(eval 'echo $'$NAME)
     if [ -z "$DB_NAME" ];
-    then 
+    then
         return 1
     fi
-
+    
     return 0
 }
 
 
 COUNTER=0
 while [ 1 -eq 1 ];
-do    
+do
     if ! is_db_enabled;
     then
         break
     fi
     backup $DB_NAME
+    dump $DB_NAME
     next
 done
