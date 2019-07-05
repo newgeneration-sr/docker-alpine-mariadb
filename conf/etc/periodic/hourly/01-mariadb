@@ -28,15 +28,15 @@ dumps(){
 }
 
 process(){
-        echo "> "$1
-        mv /var/lib/mysql-backup/$1.6 /var/lib/mysql-backup/$1.7 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/$1.5 /var/lib/mysql-backup/$1.6 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/$1.4 /var/lib/mysql-backup/$1.5 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/$1.3 /var/lib/mysql-backup/$1.4 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/$1.2 /var/lib/mysql-backup/$1.3 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/$1.1 /var/lib/mysql-backup/$1.2 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/$1 /var/lib/mysql-backup/$1.1 > /dev/null 2>&1
-        dumps $1 "" ""
+    
+    DATE=$(date +%H)
+    dumps $1 "temp-" "-$DATE"
+    TMPPATH="temp-"$1"-$DATE"
+    if [ "$(cat /var/lib/mysql-backup/$TMPPATH/status)" = "0"];
+    then
+        rm -r /var/lib/mysql-backup/$1-*
+        mv /var/lib/mysql-backup/$TMPPATH /var/lib/mysql-backup/$1-$DATE
+    fi   
 }
 
 
