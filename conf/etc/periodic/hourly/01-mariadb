@@ -56,7 +56,7 @@ is_db_enabled(){
     return 0
 }
 
-
+sleep  $(( $RANDOM % 10 +1 ))m
 COUNTER=0
 while [ 1 -eq 1 ];
 do
