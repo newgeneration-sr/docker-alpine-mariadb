@@ -17,9 +17,9 @@ dumps(){
         else
             echo " !!!!!!!! NOK"
             ERROR=1
-            echo "\n\n" >> /var/lib/mysql-backup/$PREFIX$DB$SUFIX/status.log
             echo $tab >> /var/lib/mysql-backup/$PREFIX$DB$SUFIX/status.log
             echo $LOG >> /var/lib/mysql-backup/$PREFIX$DB$SUFIX/status.log
+            sleep 15
         fi
     done
     
