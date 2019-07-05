@@ -4,6 +4,8 @@
 
 - ROOT_PASSWORD=password ( MariaDB ROOT Password )
 
+# Known Bugs :
+- Don't dump directly to an nfs storage or volume, it causes mariadb crash ( auto dump fixed )
 
 # Compose file exemple
 
