@@ -1,41 +1,40 @@
 #!/usr/bin/with-contenv sh
+
+TMP_PATH=/root/
+PERSIT_PATH=/var/lib/mysql-backup/
+DATE=$(date +%H)
 dumps(){
-    DB=$1
-    PREFIX=$2
-    SUFIX=$3
-    echo "> "$DB
+    echo "> "$DB_NAME
     ERROR=0
-    mkdir -p /var/lib/mysql-backup/$PREFIX$DB$SUFIX/
-    tables=$(mysql -NBA -u root -p$ROOT_PASSWORD -D $DB -e 'show tables')
+    mkdir -p $TMP_PATH/$DB_NAME-$DATE/
+    tables=$(mysql -NBA -u root -p$ROOT_PASSWORD -D $DB_NAME -e 'show tables')
     for tab in $tables;
     do
         echo -n "   > $tab"
-        mysqldump -uroot -p$ROOT_PASSWORD $DB $tab > /var/lib/mysql-backup/$PREFIX$DB$SUFIX/$tab.sql
+        mysqldump -uroot -p$ROOT_PASSWORD $DB_NAME $tab > $TMP_PATH/$DB_NAME-$DATE/$tab.sql
         if [ "$?" -eq 0 ]
         then
             echo " ........ OK"
         else
             echo " !!!!!!!! NOK"
             ERROR=1
-            echo $tab >> /var/lib/mysql-backup/$PREFIX$DB$SUFIX/status.log
-            echo $LOG >> /var/lib/mysql-backup/$PREFIX$DB$SUFIX/status.log
+            echo $tab >> $TMP_PATH/$DB_NAME-$DATE/status.log
             sleep 15
         fi
     done
     
-    echo $ERROR  > /var/lib/mysql-backup/$PREFIX$DB$SUFIX/status
+    echo $ERROR  > $TMP_PATH/$DB_NAME-$DATE/status
     
 }
 
 process(){
     
-    DATE=$(date +%H)
-    dumps $1 "temp-" "-$DATE"
-    TMPPATH="temp-"$1"-$DATE"
-    if [ "$(cat /var/lib/mysql-backup/$TMPPATH/status)" = "0"];
+    dumps
+    if [ "$(cat $TMP_PATH/$DB_NAME-$DATE/status)" = "0"];
     then
-        rm -r /var/lib/mysql-backup/$1-*
-        mv /var/lib/mysql-backup/$TMPPATH /var/lib/mysql-backup/$1-$DATE
+        sleep  $(( $RANDOM % 10 +1 ))m
+        rm -r $PERSIT_PATH/$DB_NAME-*
+        mv $TMP_PATH/$DB_NAME-$DATE $PERSIT_PATH/$DB_NAME-$DATE
     fi   
 }
 
@@ -64,6 +63,6 @@ do
     then
         break
     fi
-    process $DB_NAME
+    process
     next
 done

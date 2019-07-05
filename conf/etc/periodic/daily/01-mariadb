@@ -1,10 +1,12 @@
 #!/usr/bin/with-contenv sh
+
+TMP_PATH=/root/
+PERSIT_PATH=/var/lib/mysql-backup/
+
 dumps(){
-    DB=$1
-    PREFIX=$2
-    echo -n "> "$DB
+    echo -n "> "$DB_NAME
     ERROR=0
-    mysqldump -uroot -p$ROOT_PASSWORD $DB > /var/lib/mysql-backup/$PREFIX$DB.sql
+    mysqldump -uroot -p$ROOT_PASSWORD $DB_NAME > $TMP_PATH/$DB_NAME.sql
     if [ "$?" -eq 0 ]
     then
         echo " ........ OK"
@@ -12,23 +14,24 @@ dumps(){
         echo " !!!!!!!! NOK"
         ERROR=1
     fi
-    echo $ERROR  > /var/lib/mysql-backup/$PREFIX$DB.status
+    echo $ERROR  > $TMP_PATH/$DB_NAME.status
     
 }
 
 process(){
-    dumps $1 "tmp-"
-    if [ "$(cat /var/lib/mysql-backup/tmp-$1.status)" = "0" ];
+    dumps
+    if [ "$(cat $TMP_PATH/$DB_NAME.status)" = "0" ];
     then
-        mv /var/lib/mysql-backup/$1.sql.6 /var/lib/mysql-backup/$1.sql.7 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/$1.sql.5 /var/lib/mysql-backup/$1.sql.6 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/$1.sql.4 /var/lib/mysql-backup/$1.sql.5 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/$1.sql.3 /var/lib/mysql-backup/$1.sql.4 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/$1.sql.2 /var/lib/mysql-backup/$1.sql.3 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/$1.sql.1 /var/lib/mysql-backup/$1.sql.2 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/$1.sql /var/lib/mysql-backup/$1.sql.1 > /dev/null 2>&1
-        mv /var/lib/mysql-backup/tmp-$1.sql /var/lib/mysql-backup/$1.sql > /dev/null 2>&1
-        mv /var/lib/mysql-backup/tmp-$1.sql.status /var/lib/mysql-backup/$1.sql.status > /dev/null 2>&1
+        mv $PERSIT_PATH/$DB_NAME.sql.6 $PERSIT_PATH/$DB_NAME.sql.7 > /dev/null 2>&1
+        mv $PERSIT_PATH/$DB_NAME.sql.5 $PERSIT_PATH/$DB_NAME.sql.6 > /dev/null 2>&1
+        mv $PERSIT_PATH/$DB_NAME.sql.4 $PERSIT_PATH/$DB_NAME.sql.5 > /dev/null 2>&1
+        mv $PERSIT_PATH/$DB_NAME.sql.3 $PERSIT_PATH/$DB_NAME.sql.4 > /dev/null 2>&1
+        mv $PERSIT_PATH/$DB_NAME.sql.2 $PERSIT_PATH/$DB_NAME.sql.3 > /dev/null 2>&1
+        mv $PERSIT_PATH/$DB_NAME.sql.1 $PERSIT_PATH/$DB_NAME.sql.2 > /dev/null 2>&1
+        mv $PERSIT_PATH/$DB_NAME.sql $PERSIT_PATH/$DB_NAME.sql.1 > /dev/null 2>&1
+        sleep  $(( $RANDOM % 10 +1 ))m
+        mv $TMP_PATH/$DB_NAME.sql $PERSIT_PATH/$DB_NAME.sql > /dev/null 2>&1
+        mv $TMP_PATH/$DB_NAME.sql.status $PERSIT_PATH/$DB_NAME.sql.status > /dev/null 2>&1
     fi  
 }
 
@@ -57,6 +60,6 @@ do
     then
         break
     fi
-    process $DB_NAME
+    process
     next
 done
