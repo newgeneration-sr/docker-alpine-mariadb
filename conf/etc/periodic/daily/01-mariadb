@@ -32,7 +32,10 @@ process(){
         sleep  $(( $RANDOM % 10 +1 ))m
         mv $TMP_PATH/$DB_NAME.sql $PERSIT_PATH/$DB_NAME.sql > /dev/null 2>&1
         mv $TMP_PATH/$DB_NAME.sql.status $PERSIT_PATH/$DB_NAME.sql.status > /dev/null 2>&1
-    fi  
+    else
+        rm $TMP_PATH/$DB_NAME.sql
+        rm $TMP_PATH/$DB_NAME.sql.status
+    fi
 }
 
 

@@ -35,7 +35,9 @@ process(){
         sleep  $(( $RANDOM % 10 +1 ))m
         rm -r $PERSIT_PATH/$DB_NAME-*
         mv $TMP_PATH/$DB_NAME-$DATE $PERSIT_PATH/$DB_NAME-$DATE
-    fi   
+    else
+        rm -r $TMP_PATH/$DB_NAME-$DATE
+    fi
 }
 
 
