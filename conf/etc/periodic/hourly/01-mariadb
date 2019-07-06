@@ -1,5 +1,10 @@
 #!/usr/bin/with-contenv sh
 
+DISABLE=$(cat /tmp/backup.disable)
+if [ "$DISABLE" = "1" ];
+then
+    exit 0
+fi
 TMP_PATH=/root/
 PERSIT_PATH=/var/lib/mysql-backup/
 DATE=$(date +%H)
@@ -30,7 +35,7 @@ dumps(){
 process(){
     
     dumps
-    if [ "$(cat $TMP_PATH/$DB_NAME-$DATE/status)" = "0"];
+    if [ "$(cat $TMP_PATH/$DB_NAME-$DATE/status)" = "0" ];
     then
         sleep  $(( $RANDOM % 10 +1 ))m
         rm -r $PERSIT_PATH/$DB_NAME-*

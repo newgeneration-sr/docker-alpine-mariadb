@@ -1,5 +1,5 @@
 #!/usr/bin/with-contenv sh
-
+disable-backup
 do_query() {
     echo "$1" >> /tmp/cmd
   
@@ -85,3 +85,4 @@ else
         echo "0" > /tmp/mariadb
         echo "0" > /tmp/phpmyadmin
 fi
+enable-backup
