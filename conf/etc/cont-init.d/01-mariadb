@@ -86,3 +86,4 @@ else
         echo "0" > /tmp/phpmyadmin
 fi
 enable-backup
+disable-backup part

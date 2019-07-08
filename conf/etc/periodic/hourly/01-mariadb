@@ -1,75 +1,9 @@
 #!/usr/bin/with-contenv sh
 
-DISABLE=$(cat /tmp/backup.disable)
+DISABLE=$(cat /tmp/backuppart.disable)
 if [ "$DISABLE" = "1" ];
 then
     exit 0
 fi
-TMP_PATH=/root/
-PERSIT_PATH=/var/lib/mysql-backup/
-DATE=$(date +%H)
-dumps(){
-    echo "> "$DB_NAME
-    ERROR=0
-    mkdir -p $TMP_PATH/$DB_NAME-$DATE/
-    tables=$(mysql -NBA -u root -p$ROOT_PASSWORD -D $DB_NAME -e 'show tables')
-    for tab in $tables;
-    do
-        echo -n "   > $tab"
-        mysqldump -uroot -p$ROOT_PASSWORD $DB_NAME $tab > $TMP_PATH/$DB_NAME-$DATE/$tab.sql
-        if [ "$?" -eq 0 ]
-        then
-            echo " ........ OK"
-        else
-            echo " !!!!!!!! NOK"
-            ERROR=1
-            echo $tab >> $TMP_PATH/$DB_NAME-$DATE/status.log
-            sleep 15
-        fi
-    done
-    
-    echo $ERROR  > $TMP_PATH/$DB_NAME-$DATE/status
-    
-}
-
-process(){
-    
-    dumps
-    if [ "$(cat $TMP_PATH/$DB_NAME-$DATE/status)" = "0" ];
-    then
-        sleep  $(( $RANDOM % 10 +1 ))m
-        rm -r $PERSIT_PATH/$DB_NAME-*
-        mv $TMP_PATH/$DB_NAME-$DATE $PERSIT_PATH/$DB_NAME-$DATE
-    else
-        rm -r $TMP_PATH/$DB_NAME-$DATE
-    fi
-}
-
-
-next(){
-    echo "> Get Next Site"
-    COUNTER=$(($COUNTER + 1))
-}
-
-is_db_enabled(){
-    NAME="DB_"$COUNTER"_NAME"
-    DB_NAME=$(eval 'echo $'$NAME)
-    if [ -z "$DB_NAME" ];
-    then
-        return 1
-    fi
-    
-    return 0
-}
-
-sleep  $(( $RANDOM % 10 +1 ))m
-COUNTER=0
-while [ 1 -eq 1 ];
-do
-    if ! is_db_enabled;
-    then
-        break
-    fi
-    process
-    next
-done
+sleep  $(( $RANDOM % 30 +1 ))m
+backup partial

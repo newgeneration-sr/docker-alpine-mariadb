@@ -1,3 +1,15 @@
 #!/bin/sh
 
-echo 0 > /tmp/backup.disable
+if [ "$1" = "part" ];
+then
+    echo 0 > /tmp/backuppart.disable
+    
+elif [ "$1" = "full" ];
+then
+    echo 0 > /tmp/backupfull.disable
+    
+else
+    echo 0 > /tmp/backuppart.disable
+    echo 0 > /tmp/backupfull.disable
+    
+fi
