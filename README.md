@@ -3,6 +3,12 @@
 # Auto configuration parameters :
 
 - ROOT_PASSWORD=password ( MariaDB ROOT Password )
+- DAILY_BACKUPS=YES ( FULL | PART | BOTH | NONE )
+# DAILY_BACKUPS
+- FULL : One SQL dump per day 
+- PART : One SQL per table dump per hour 
+- BOTH : One SQL dump per day + one SQL dump per table per hour
+- NONE : No backups
 
 # Known Bugs :
 - Don't dump directly to an nfs storage or volume, it causes mariadb crash ( auto dump fixed )

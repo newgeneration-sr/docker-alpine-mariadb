@@ -10,6 +10,7 @@ do_exec_query(){
         return $?
 }
 
+
 is_db_enabled(){
     NAME="DB_"$COUNTER"_NAME"
     DB_NAME=$(eval 'echo $'$NAME)
@@ -85,5 +86,15 @@ else
         echo "0" > /tmp/mariadb
         echo "0" > /tmp/phpmyadmin
 fi
-enable-backup
-disable-backup part
+
+disable-backup
+if [ "$DAILY_BACKUPS" = "PART" ];
+then
+    enable-backup part
+elif [ "$DAILY_BACKUPS" = "FULL" ];
+then
+    enable-backup full
+elif [ "$DAILY_BACKUPS" = "BOTH" ];
+then
+    enable-backup
+fis

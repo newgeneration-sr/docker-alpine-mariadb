@@ -1,6 +1,7 @@
 FROM dotriver/alpine-s6
 
 ENV ROOT_PASSWORD=password
+ENV DAILY_BACKUPS=FULL
 
 RUN set -x \
     && apk add --no-cache mariadb  mariadb-client nginx php7-fpm php7-session php7-mbstring phpmyadmin \
