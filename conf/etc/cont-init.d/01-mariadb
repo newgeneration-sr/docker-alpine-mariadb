@@ -97,4 +97,4 @@ then
 elif [ "$DAILY_BACKUPS" = "BOTH" ];
 then
     enable-backup
-fis
+fi
