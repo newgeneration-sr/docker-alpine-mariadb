@@ -9,7 +9,7 @@ bind-address                    = 127.0.0.1
 server-id                       = 1
 datadir                         = /var/lib/mysql/
 tmpdir                          = /tmp
-innodb_lock_wait_timeout        = 300
+innodb_lock_wait_timeout        = 3000
 skip-external-locking 
 sql_mode                        = ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 [mysqldump]
