@@ -52,9 +52,6 @@ processfull(){
     fulldump
     if [ "$(cat $TMP_PATH/$DB_NAME.status)" = "0" ];
     then
-        mv $PERSIT_PATH/$DB_NAME.sql.6 $PERSIT_PATH/$DB_NAME.sql.7 > /dev/null 2>&1
-        mv $PERSIT_PATH/$DB_NAME.sql.5 $PERSIT_PATH/$DB_NAME.sql.6 > /dev/null 2>&1
-        mv $PERSIT_PATH/$DB_NAME.sql.4 $PERSIT_PATH/$DB_NAME.sql.5 > /dev/null 2>&1
         mv $PERSIT_PATH/$DB_NAME.sql.3 $PERSIT_PATH/$DB_NAME.sql.4 > /dev/null 2>&1
         mv $PERSIT_PATH/$DB_NAME.sql.2 $PERSIT_PATH/$DB_NAME.sql.3 > /dev/null 2>&1
         mv $PERSIT_PATH/$DB_NAME.sql.1 $PERSIT_PATH/$DB_NAME.sql.2 > /dev/null 2>&1
