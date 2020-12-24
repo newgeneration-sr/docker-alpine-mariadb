@@ -1,3 +1,7 @@
+![docker build automated](https://img.shields.io/docker/cloud/automated/dotriver/mariadb)
+![docker build status](https://img.shields.io/docker/cloud/build/dotriver/mariadb)
+![docker build status](https://img.shields.io/docker/cloud/pulls/dotriver/mariadb)
+
 # MariaDB + PHPMyAdmin on Alpine Linux + S6 Overlay
 
 # Auto configuration parameters :
