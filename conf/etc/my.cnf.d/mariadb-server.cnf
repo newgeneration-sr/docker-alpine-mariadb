@@ -12,6 +12,12 @@ tmpdir                          = /tmp
 innodb_lock_wait_timeout        = 3000
 skip-external-locking 
 sql_mode                        = ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+query_cache_type                = 1
+query_cache_size                = 128M
+query_cache_limit               = 2M
+query_cache_strip_comments      = 1
+
 [mysqldump]
 quick
 max_allowed_packet = 64M
+
